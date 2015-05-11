@@ -1,10 +1,10 @@
 ## SQL Server Versions PowerShell Module
 
-*Description*
+***Description***
 
 This PowerShell module is used to abstract API calls to the SQL Server Versions API.  It can be used to retrieve version information.
 
-*Usage*
+***Usage***
 
 Pass in the build as a string.
 
