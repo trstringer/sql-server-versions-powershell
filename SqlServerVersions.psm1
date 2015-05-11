@@ -101,5 +101,8 @@ function Get-SqlServerVersion {
 
     # make the request
     #
-    Invoke-RestMethod -Method Get -Uri $RequestUri
+    Invoke-RestMethod -Method Get -Uri $RequestUri |
+        Select-Object Major, Minor, Build, Revision,
+            FriendlyNameShort, FriendlyNameLong,
+            ReleaseDate, IsSupported, ReferenceLinks
 }
