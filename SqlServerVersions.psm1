@@ -106,3 +106,70 @@ function Get-SqlServerVersion {
             FriendlyNameShort, FriendlyNameLong,
             ReleaseDate, IsSupported, ReferenceLinks
 }
+function Modify-SqlServerVersion {
+    param (
+        [Parameter(Mandatory = $true)]
+        [int]$Major,
+
+        [Parameter(Mandatory = $true)]
+        [int]$Minor,
+
+        [Parameter(Mandatory = $true)]
+        [int]$Build,
+
+        [Parameter(Mandatory = $false)]
+        [int]$Revision = -1,
+
+        [Parameter(Mandatory = $false)]
+        [string]$FriendlyNameLong,
+
+        [Parameter(Mandatory = $false)]
+        [string]$FriendlyNameShort,
+
+        [Parameter(Mandatory = $false)]
+        [datetime]$ReleaseDate,
+
+        [Parameter(Mandatory = $false)]
+        [Nullable[bool]]$IsSupported
+    )
+
+    if ($Revision -eq -1 -and [string]::IsNullOrWhiteSpace($FriendlyNameLong) -and 
+        [string]::IsNullOrWhiteSpace($FriendlyNameShort) -and !$ReleaseDate -and !$IsSupported) {
+        Write-Warning "No suggested changes, making no changes to $Major.$Minor.$Build.x"
+        return
+    }
+
+    # cache the original version
+    #
+    $VersionInfo = Get-SqlServerVersion -Major $Major -Minor $Minor -Build $Build
+
+    # if this version doesn't exist, short circuit out 
+    # of this call
+    #
+    if ($VersionInfo -eq $null) {
+        Write-Warning "Version $Major.$Minor.$Build.x not found. No changes made."
+        return
+    }
+
+    if ($Revision -ne -1) {
+        $VersionInfo.Revision = $Revision
+    }
+    if (![string]::IsNullOrWhiteSpace($FriendlyNameLong)) {
+        $VersionInfo.FriendlyNameLong = $FriendlyNameLong
+    }
+    if (![string]::IsNullOrWhiteSpace($FriendlyNameShort)) {
+        $VersionInfo.FriendlyNameShort = $FriendlyNameShort
+    }
+    if ($ReleaseDate) {
+        $VersionInfo.ReleaseDate = $ReleaseDate
+    }
+    if ($IsSupported -ne $null) {
+        $VersionInfo.IsSupported = $IsSupported
+    }
+
+    Invoke-RestMethod -Method Put -Uri "$(Get-SqlServerVersionApiRootUri)/$($VersionInfo.Major)/$($VersionInfo.Minor)/$($VersionInfo.Build)" -Body ($VersionInfo | ConvertTo-Json) -ContentType "application/json" |
+        Select-Object Major, Minor, Build, Revision,
+            FriendlyNameShort, FriendlyNameLong,
+            ReleaseDate, IsSupported, ReferenceLinks
+    
+}
