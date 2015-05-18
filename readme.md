@@ -16,7 +16,7 @@ Pass in the build as a string.
 
 If you want to change a SQL Server version, then specify the major.minor.build and then any combination of version data that you want changed.
 
-`Modify-SqlServerVersion -Major 10 -Minor -0 -Build 1600 *<modifiable parameters>*`
+`Modify-SqlServerVersion -Major 10 -Minor 0 -Build 1600` *<modifiable parameters>*
 
 The list of parameters and properties of version data you can modify is following:
 
@@ -25,3 +25,7 @@ The list of parameters and properties of version data you can modify is followin
 - `FriendlyNameShort` (string) - the short friendly name
 - `ReleaseDate` (datetime) - when the build was released
 - `IsSupported` (bool) - TRUE if the build is supported, FALSE if the build is not currently supported
+
+If you want to change a build from supported to unsupported, you can just specify the IsSupported parameter.
+
+`Modify-SqlServerVersion -Major 10 -Minor 0 -Build 1600 -IsSupported $false`
