@@ -20,8 +20,8 @@ If you want to change a SQL Server version, then specify the major.minor.build a
 
 The list of parameters and properties of version data you can modify is following:
 
-`Revision` (int) - the revision number of the build number.  This is the last number in the version build of major.minor.build.REVISION
-`FriendlyNameLong` (string) - the long and proper friendly name for the build
-`FriendlyNameShort` (string) - the short friendly name
-`ReleaseDate` (datetime) - when the build was released
-`IsSupported` (bool) - TRUE if the build is supported, FALSE if the build is not currently supported
+- `Revision` (int) - the revision number of the build number.  This is the last number in the version build of major.minor.build.REVISION
+- `FriendlyNameLong` (string) - the long and proper friendly name for the build
+- `FriendlyNameShort` (string) - the short friendly name
+- `ReleaseDate` (datetime) - when the build was released
+- `IsSupported` (bool) - TRUE if the build is supported, FALSE if the build is not currently supported
