@@ -101,10 +101,13 @@ function Get-SqlServerVersion {
 
     # make the request
     #
-    Invoke-RestMethod -Method Get -Uri $RequestUri |
-        Select-Object Major, Minor, Build, Revision,
-            FriendlyNameShort, FriendlyNameLong,
-            ReleaseDate, IsSupported, ReferenceLinks
+    $Versions = Invoke-RestMethod -Method Get -Uri $RequestUri
+    foreach ($Version in $Versions) {
+        $Version |
+            Select-Object Major, Minor, Build, Revision,
+                FriendlyNameShort, FriendlyNameLong,
+                ReleaseDate, IsSupported, ReferenceLinks
+    }
 }
 function Modify-SqlServerVersion {
     param (
